@@ -1,34 +1,21 @@
-import React, { memo, useEffect, useState } from "react";
-
-export default memo(function SearchPanel() {
-  const [params, setParams] = useState({
-    name: "",
-    personId: "",
-  });
-
-  const [users, setUsers] = useState([]);
-  const [list, setList] = useState([]);
-  const handleInputChange = (e) => {
-    setParams(...params, {
-      name: e.target.value,
-    });
+import { memo } from "react";
+import { debounce } from "utils";
+export default memo(function SearchPanel({ params, setParams, users }) {
+  const handleInput = (e) => {
+    console.log("handleInput");
+    console.log(e.target.value)
+    setParams({ ...params, name: e.target.value });
   };
+  const handleInputChange = handleInput;
+  // const handleInputChange = debounce(handleInput);
 
   const handleSelectChange = (e) => {
-    setParams(...params, {
+    console.log("handleSelectChange", e.target.value);
+    setParams({
+      ...params,
       personId: e.target.value,
     });
   };
-
-  // 当 params 发生变化时， 应该去请求对应的接口
-  useEffect(() => {
-    fetch("").then((res) => {
-      if (res.ok) {
-        setList(res.json());
-      }
-    });
-    // 当 params 发生改变时获取
-  }, [params]);
 
   return (
     <form action="">
@@ -38,12 +25,14 @@ export default memo(function SearchPanel() {
         value={params.name}
         onChange={(e) => handleInputChange(e)}
       />
-      <select value={params.personId} onChange={(e) => handleSelectChange}>
+      <select value={params.personId} onChange={(e) => handleSelectChange(e)}>
         <option value="0" default>
           负责人
         </option>
         {users.map((user) => (
-          <option value={user.id}>{user.name}</option>
+          <option key={user.id} value={user.id}>
+            {user.name}
+          </option>
         ))}
       </select>
     </form>
