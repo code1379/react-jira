@@ -24,8 +24,8 @@ export const useMount = (callback: () => void) => {
 // ! 老师使用下面的方法，我理解的意思是延时修改。
 // ? 但是如果你这里延时修改的话，那就意味着 input :value 的值是不是也是延时修改的 ?
 // const debouncedParams = useDebounce(params, 2000)
-export const useDebounce = (value: any, delay: number = 200) => {
-  const [debouncedValue, setDebouncedValue] = useState(null);
+export const useDebounce = <T,>(value: T, delay: number = 200): T => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
     // 每次在 value 变化之后，设置一个定时器
     const timer = setTimeout(() => setDebouncedValue(value), delay);

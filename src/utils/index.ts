@@ -1,9 +1,9 @@
-export const isFalsy = (value: any) => {
+export const isFalsy = (value: unknown): boolean => {
   return value === 0 ? false : !value;
 };
 
 // 在一个函数里，改变传入的对象本身是不好的
-export const cleanObject = (object: any) => {
+export const cleanObject = (object: any): Object => {
   // object.name = "123" // 直接修改了对象
   // 我们不应该污染传入的对象
   const result = { ...object };
