@@ -5,8 +5,8 @@ import Login from "views/login";
 function App() {
   return (
     <div className="App">
-      <ProjectList />
-      <TsReactTest />
+      {/* <ProjectList /> */}
+      {/* <TsReactTest /> */}
       <Login />
     </div>
   );
