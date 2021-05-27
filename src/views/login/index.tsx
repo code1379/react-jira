@@ -1,20 +1,9 @@
+import { useAuth } from "context/auth-context";
+
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const Login = () => {
-  const login = (user: { username: string; password: string }) => {
-    fetch(`${apiUrl}/login`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(user),
-    }).then(async (res) => {
-      if (res.ok) {
-        const result = await res.json();
-        console.log(result);
-      }
-    });
-  };
+  const { login, user } = useAuth();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,6 +15,11 @@ const Login = () => {
   };
   return (
     <div>
+      {user ? (
+        <div>
+          用户登陆成功 {user.name} {user.token}
+        </div>
+      ) : null}
       <form onSubmit={(e) => handleSubmit(e)}>
         <div>
           <label htmlFor="username">用户名</label>

@@ -1,3 +1,9 @@
+// 有 handleUserResponse login\register\logout 方法
+// - login
+// - register
+// - 上面两个会调用 handleUserResponse 在用户登陆或者注册成功之后，使用 localStorage 存储 token
+// - handleUserResponse 接收服务器返回的类 User接口的信息
+// - logout 会删除 localStorage 中的 token
 const localStorageKey = "__auth_provider_token__";
 
 export const getToken = () => window.localStorage.getItem(localStorageKey);
@@ -15,6 +21,7 @@ export interface User {
 }
 export const handleUserResponse = ({ user }: { user: User }) => {
   window.localStorage.setItem(localStorageKey, user.token || "");
+  return user;
 };
 
 interface LoginUser {
@@ -25,7 +32,8 @@ interface LoginUser {
 interface RegisterUser extends LoginUser {}
 
 export const login = (data: LoginUser) => {
-  fetch(`${apiUrl}/login`, {
+  // fetch 是 Promise 。然后 Promise
+  return fetch(`${apiUrl}/login`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -36,12 +44,16 @@ export const login = (data: LoginUser) => {
       const result = await res.json();
       // console.log(result);
       return handleUserResponse(result);
+      // return Promise.resolve(handleUserResponse(result));
+    } else {
+      // 实现的效果类似于  throw a new error
+      return Promise.reject(data);
     }
   });
 };
 
 export const register = (data: RegisterUser) => {
-  fetch(`${apiUrl}/register`, {
+  return fetch(`${apiUrl}/register`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -51,9 +63,13 @@ export const register = (data: RegisterUser) => {
     if (res.ok) {
       const result = await res.json();
       // console.log(result);
-      return handleUserResponse(result);
+      return Promise.resolve(handleUserResponse(result));
+    } else {
+      // 实现的效果类似于  throw a new error
+      return Promise.reject(data);
     }
   });
 };
 
-export const logout = () => window.localStorage.removeItem(localStorageKey);
+export const logout = async () =>
+  window.localStorage.removeItem(localStorageKey);
