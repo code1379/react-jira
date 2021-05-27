@@ -1,7 +1,6 @@
 import React, { memo } from "react";
 
 export default memo(function List({ list, users }) {
-  console.log(list)
   return (
     <table border="1">
       <thead>

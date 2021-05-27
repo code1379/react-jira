@@ -15,6 +15,9 @@ export const cleanObject = (object) => {
       delete result[key];
     }
   });
+  if (result?.personId == 0) {
+    delete result.personId;
+  }
   return result;
 };
 
