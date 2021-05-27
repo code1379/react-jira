@@ -52,7 +52,7 @@ const TsReactTest = () => {
       <button onClick={() => clear()}>clear</button>
       <ul>
         {value.map((person, index) => (
-          <li>
+          <li key={index}>
             {index} - {person.name}
           </li>
         ))}
