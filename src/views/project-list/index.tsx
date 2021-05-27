@@ -1,10 +1,24 @@
 import { memo, useState, useEffect } from "react";
 import qs from "qs";
 import { cleanObject } from "utils";
+import { useMount, useDebounce } from "hooks";
+
 import SearchPanel from "./search-panel";
 import List from "./list";
 
-import { useMount, useDebounce } from "hooks";
+interface User {
+  id: number;
+  name: string;
+}
+
+interface Project {
+  id: number;
+  name: string;
+  personId: number;
+  organization: string;
+  created: number;
+}
+
 // react 中默认含有 dotenv 所以可以直接获取到
 const apiUrl = process.env.REACT_APP_API_URL;
 export default memo(function ProjectList() {
