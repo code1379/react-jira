@@ -22,10 +22,10 @@ interface Project {
 // react 中默认含有 dotenv 所以可以直接获取到
 const apiUrl = process.env.REACT_APP_API_URL;
 export default memo(function ProjectList() {
+  // 背后的原理并不是类型推断而是，泛型
   const [params, setParams] = useState({
     // 项目名称
     name: "",
-    //
     personId: "",
   });
   const [list, setList] = useState([]);
