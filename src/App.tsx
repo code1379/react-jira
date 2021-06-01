@@ -1,14 +1,12 @@
-import ProjectList from "views/project-list";
-import TsReactTest from "hooks/try-use-array";
-import Login from "views/login";
-import Register from "views/register";
+import { useAuth } from "./context/auth-context";
+import UnAuthenticatedApp from "unauthenticated-app";
+import AuthenticatedApp from "authenticated-app";
 function App() {
+  const { user } = useAuth();
+
   return (
     <div className="App">
-      {/* <ProjectList /> */}
-      {/* <TsReactTest /> */}
-      <Login />
-      <Register />
+      {user ? <AuthenticatedApp /> : <UnAuthenticatedApp />}
     </div>
   );
 }
