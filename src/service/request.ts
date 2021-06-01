@@ -1,3 +1,4 @@
+import { useAuth } from "context/auth-context";
 import qs from "qs";
 import * as auth from "../auth-provider";
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -8,9 +9,9 @@ interface Config extends RequestInit {
   data?: object;
 }
 
-export const reqest = async (
+export const request = async (
   endpoint: string,
-  { data, token, headers, ...customConfig }: Config
+  { data, token, headers, ...customConfig }: Config = {}
 ) => {
   const config = {
     method: "GET",
@@ -43,4 +44,12 @@ export const reqest = async (
       return Promise.reject(data);
     }
   });
+};
+
+export const useRequest = () => {
+  const { user } = useAuth();
+  // TODO 讲解 ts 操作符
+  // return (...[endpoint, config]: [string, Config]) =>
+  return (...[endpoint, config]: Parameters<typeof request>) =>
+    request(endpoint, { ...config, token: user?.token });
 };

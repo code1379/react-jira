@@ -2,7 +2,7 @@ import { memo, useState, useEffect } from "react";
 import qs from "qs";
 import { cleanObject } from "utils";
 import { useMount, useDebounce } from "hooks";
-
+import { useRequest } from "../../service/request";
 import SearchPanel from "./search-panel";
 import List from "./list";
 
@@ -32,27 +32,30 @@ export default memo(function ProjectList() {
   const [users, setUsers] = useState([]);
 
   const debouncedParams = useDebounce(params, 2000);
+  const client = useRequest();
   // 当 params 发生变化时， 应该去请求对应的接口
   useEffect(() => {
     console.log("获取项目信息");
-    fetch(
-      `${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParams))}`
-    ).then(async (res) => {
-      if (res.ok) {
-        const result = await res.json();
-        setList(result);
-      }
-    });
+    client("projects", { data: cleanObject(debouncedParams) }).then(setList);
+    // fetch(
+    //   `${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParams))}`
+    // ).then(async (res) => {
+    //   if (res.ok) {
+    //     const result = await res.json();
+    //     setList(result);
+    //   }
+    // });
     // 当 params 发生改变时获取
   }, [debouncedParams]);
   // 获取用户
 
   useMount(() => {
-    fetch(`${apiUrl}/users`).then(async (res) => {
-      if (res.ok) {
-        setUsers(await res.json());
-      }
-    });
+    client("users").then(setUsers);
+    // fetch(`${apiUrl}/users`).then(async (res) => {
+    //   if (res.ok) {
+    //     setUsers(await res.json());
+    //   }
+    // });
   });
 
   return (

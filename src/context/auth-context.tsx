@@ -1,6 +1,7 @@
-import React, { useState, ReactNode } from "react";
+import React, { useState, ReactNode, useEffect } from "react";
 
 import * as auth from "auth-provider";
+import { request } from "../service/request";
 // auth 中有 handleUserResponse login\register\logout 方法
 // - login
 // - register
@@ -27,6 +28,16 @@ const AuthContext =
 // 主要是用在 devtool 中，项目中实际上没什么意义
 AuthContext.displayName = "AuthContext";
 
+const bootstrapUser = async () => {
+  let user = null;
+  const token = auth.getToken();
+  if (token) {
+    const data = await request("me", { token });
+    user = data.user;
+  }
+  return user;
+};
+
 // https://zh-hans.reactjs.org/docs/hooks-reference.html#usecontext
 // 返回 React XXXContext.Provider
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -34,6 +45,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // TODO user 为 localStorage 中存储的用户性
   const [user, setUser] = useState<auth.User | null>(null);
 
+  useEffect(() => {
+    bootstrapUser().then(setUser);
+  });
   // 当用户点击 login 的时候
   const login = (form: AuthForm) => {
     // 将表单的数据传递个 auth 的 login 方法
