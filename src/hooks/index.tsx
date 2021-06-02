@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
+    // 依赖项里 加上 callback 会造成无限循环，这个和 useCallback 和 useMemo 有关系
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 

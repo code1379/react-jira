@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Login from "./login";
 import Register from "./register";
-import { Card, Divider } from "antd";
+import { Card, Divider, Button } from "antd";
 import styled from "@emotion/styled";
 import logo from "../assets/images/logo.svg";
 import left from "../assets/images/left.svg";
@@ -17,10 +17,9 @@ export default function UnAuthenticatedApp() {
         <Title>{isRegisterPage ? "注册" : "登录"}</Title>
         {isRegisterPage ? <Register /> : <Login />}
         <Divider />
-        <a onClick={() => setIsRegisterPage(!isRegisterPage)}>
-          切换到{" "}
+        <Button type="link" onClick={() => setIsRegisterPage(!isRegisterPage)}>
           {isRegisterPage ? "已经有账号了？直接登陆" : "没有账号，注册账号"}
-        </a>
+        </Button>
       </ShadowCard>
     </Container>
   );

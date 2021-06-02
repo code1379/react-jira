@@ -31,6 +31,7 @@ export default memo(function ProjectList() {
     //   }
     // });
     // 当 params 发生改变时获取
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedParams]);
   // 获取用户
 

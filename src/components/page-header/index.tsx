@@ -3,10 +3,9 @@ import styled from "@emotion/styled";
 import logo from "../../assets/images/software-logo.svg";
 import { useAuth } from "context/auth-context";
 import { ReactComponent as Logo } from "../../assets/images/software-logo.svg";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, Button } from "antd";
 export default memo(function PageHeader() {
   const { user, logout } = useAuth();
-  console.log(user);
   return (
     <HeaderWrapper>
       <div className="left">
@@ -15,19 +14,23 @@ export default memo(function PageHeader() {
         <div className="item">项目</div>
         <div className="item">用户</div>
       </div>
-      <a className="right">
+      <div className="right">
         <Dropdown
           overlay={
             <Menu>
               <Menu.Item key="logout">
-                <a onClick={logout}>登出</a>
+                <Button type={"link"} onClick={logout}>
+                  登出
+                </Button>
               </Menu.Item>
             </Menu>
           }
         >
-          <a onClick={(e) => e.preventDefault}> Hi, {user?.name}</a>
+          <Button type="link" onClick={(e) => e.preventDefault}>
+            Hi, {user?.name}
+          </Button>
         </Dropdown>
-      </a>
+      </div>
     </HeaderWrapper>
   );
 });

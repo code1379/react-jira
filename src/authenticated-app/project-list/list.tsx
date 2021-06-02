@@ -16,9 +16,9 @@ interface ListProps {
   users: User[];
 }
 
-interface Info {
-  [propName: string]: string;
-}
+// interface Info {
+//   [propName: string]: string;
+// }
 
 export default memo(function List({ list, users }: ListProps) {
   // const columns = [
@@ -89,6 +89,7 @@ export default memo(function List({ list, users }: ListProps) {
           },
         },
       ]}
+      rowKey={(r) => r.id}
       dataSource={list}
       pagination={false}
     ></Table>
