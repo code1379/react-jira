@@ -1,26 +1,10 @@
 import { memo, useState, useEffect } from "react";
-import qs from "qs";
 import { cleanObject } from "utils";
 import { useMount, useDebounce } from "hooks";
 import { useRequest } from "../../service/request";
 import SearchPanel from "./search-panel";
 import List from "./list";
 
-interface User {
-  id: number;
-  name: string;
-}
-
-interface Project {
-  id: number;
-  name: string;
-  personId: number;
-  organization: string;
-  created: number;
-}
-
-// react 中默认含有 dotenv 所以可以直接获取到
-const apiUrl = process.env.REACT_APP_API_URL;
 export default memo(function ProjectList() {
   // 背后的原理并不是类型推断而是，泛型
   const [params, setParams] = useState({
@@ -31,7 +15,7 @@ export default memo(function ProjectList() {
   const [list, setList] = useState([]);
   const [users, setUsers] = useState([]);
 
-  const debouncedParams = useDebounce(params, 2000);
+  const debouncedParams = useDebounce(params, 200);
   const client = useRequest();
   // 当 params 发生变化时， 应该去请求对应的接口
   useEffect(() => {

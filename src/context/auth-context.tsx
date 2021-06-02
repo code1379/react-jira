@@ -1,14 +1,14 @@
-import React, { useState, ReactNode, useEffect } from "react";
+import React, { useState, ReactNode } from "react";
 
 import * as auth from "auth-provider";
 import { request } from "../service/request";
+import { useMount } from "hooks";
 // auth 中有 handleUserResponse login\register\logout 方法
 // - login
 // - register
 // - 上面两个会调用 handleUserResponse 在用户登陆或者注册成功之后，使用 localStorage 存储 token
 // - handleUserResponse 接收服务器返回的类 User接口的信息
 // - logout 会删除 localStorage 中的 token
-
 interface AuthForm {
   username: string;
   password: string;
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // TODO user 为 localStorage 中存储的用户性
   const [user, setUser] = useState<auth.User | null>(null);
 
-  useEffect(() => {
+  useMount(() => {
     bootstrapUser().then(setUser);
   });
   // 当用户点击 login 的时候

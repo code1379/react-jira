@@ -1,43 +1,41 @@
-const apiUrl = process.env.REACT_APP_API_URL;
+import { useAuth } from "context/auth-context";
 
+import { Form, Input, Button } from "antd";
 const Register = () => {
-  const register = (user: { username: string; password: string }) => {
-    fetch(`${apiUrl}/register`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(user),
-    }).then(async (res) => {
-      if (res.ok) {
-        const result = await res.json();
-        console.log(result);
-      }
-    });
-  };
+  const { register, user } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // console.log(e);
-    // console.log(e.target);
-    const username = (e.currentTarget.elements[0] as HTMLInputElement).value;
-    const password = (e.currentTarget.elements[1] as HTMLInputElement).value;
-    register({ username: username, password: password });
+  const onFinish = (values: { username: string; password: string }) => {
+    const { username, password } = values;
+    register({ username, password });
   };
   return (
     <div>
-      <form onSubmit={(e) => handleSubmit(e)}>
+      {user ? (
         <div>
-          <label htmlFor="username">用户名</label>
-          <input type="text" id="username" />
+          用户登陆成功 {user.name} {user.token}
         </div>
-
-        <div>
-          <label htmlFor="password">密码</label>
-          <input type="password" id="password" />
-        </div>
-        <button type="submit">注册</button>
-      </form>
+      ) : null}
+      <Form onFinish={onFinish}>
+        <Form.Item
+          label="Username"
+          name="username"
+          rules={[{ required: true, message: "Please input your username!" }]}
+        >
+          <Input placeholder="用户名" />
+        </Form.Item>
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: "Please input your password!" }]}
+        >
+          <Input.Password placeholder="密码" />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            注册
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 };

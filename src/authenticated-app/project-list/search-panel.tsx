@@ -1,5 +1,6 @@
 import { memo } from "react";
-
+import { Form, Input, Select } from "antd";
+const { Option } = Select;
 export interface User {
   id: string;
   name: string;
@@ -29,36 +30,37 @@ export default memo(function SearchPanel({
   };
   const handleInputChange = handleInput;
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  // const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setParams({
+  //     ...params,
+  //     personId: e.target.value,
+  //   });
+  // };
+
+  const handleAntdSelectChange = (value: string) => {
     setParams({
       ...params,
-      personId: e.target.value,
+      personId: value,
     });
   };
-
+  console.log(users);
   return (
-    <form action="">
-      <input
-        type="text"
+    <Form>
+      <Input
         placeholder="项目名"
         value={params.name}
         onChange={(e) => {
           handleInputChange(e);
         }}
-      />
-      <select
-        value={params.personId}
-        onChange={(e) => {
-          handleSelectChange(e);
-        }}
-      >
-        <option value="">负责人</option>
+      ></Input>
+      <Select defaultValue="" onChange={(e) => handleAntdSelectChange(e)}>
+        <Option value="">请选择</Option>
         {users.map((user) => (
-          <option key={user.id} value={user.id}>
+          <Option key={user.id} value={user.id}>
             {user.name}
-          </option>
+          </Option>
         ))}
-      </select>
-    </form>
+      </Select>
+    </Form>
   );
 });
