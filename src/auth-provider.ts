@@ -47,7 +47,7 @@ export const login = (data: LoginUser) => {
       // return Promise.resolve(handleUserResponse(result));
     } else {
       // 实现的效果类似于  throw a new error
-      return Promise.reject(data);
+      return Promise.reject(await res.json());
     }
   });
 };
@@ -66,7 +66,7 @@ export const register = (data: RegisterUser) => {
       return Promise.resolve(handleUserResponse(result));
     } else {
       // 实现的效果类似于  throw a new error
-      return Promise.reject(data);
+      return Promise.reject(await res.json());
     }
   });
 };

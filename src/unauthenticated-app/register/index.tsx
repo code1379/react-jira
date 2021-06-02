@@ -1,12 +1,33 @@
 import { useAuth } from "context/auth-context";
 
 import { Form, Input, Button } from "antd";
-const Register = () => {
-  const { register, user } = useAuth();
+import { useAsync } from "hooks/use-async";
 
-  const onFinish = (values: { username: string; password: string }) => {
+const Register = ({ onError }: { onError: (error: Error) => void }) => {
+  const { register, user } = useAuth();
+  const { run, isLoading } = useAsync(undefined, { throwOnError: true });
+  // cpassword 不参与服务器的交互
+  // 服务器值传递 用户名和密码
+  // 这里只做个相等判断
+  const onFinish = async ({
+    cpassword,
+    ...values
+  }: {
+    username: string;
+    password: string;
+    cpassword: string;
+  }) => {
+    if (cpassword !== values.password) {
+      return onError(new Error("两次输入的密码不一致"));
+    }
     const { username, password } = values;
-    register({ username, password });
+
+    try {
+      await run(register({ username, password }));
+    } catch (e) {
+      console.log(e);
+      onError(e);
+    }
   };
   return (
     <div>
@@ -17,21 +38,25 @@ const Register = () => {
       ) : null}
       <Form onFinish={onFinish}>
         <Form.Item
-          label="Username"
           name="username"
-          rules={[{ required: true, message: "Please input your username!" }]}
+          rules={[{ required: true, message: "请输入用户名" }]}
         >
           <Input placeholder="用户名" />
         </Form.Item>
         <Form.Item
-          label="Password"
           name="password"
-          rules={[{ required: true, message: "Please input your password!" }]}
+          rules={[{ required: true, message: "请输入密码" }]}
         >
           <Input.Password placeholder="密码" />
         </Form.Item>
+        <Form.Item
+          name="cpassword"
+          rules={[{ required: true, message: "请确认密码" }]}
+        >
+          <Input.Password placeholder="确认密码" />
+        </Form.Item>
         <Form.Item>
-          <Button block type="primary" htmlType="submit">
+          <Button loading={isLoading} block type="primary" htmlType="submit">
             注册
           </Button>
         </Form.Item>

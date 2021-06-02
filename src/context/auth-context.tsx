@@ -3,6 +3,9 @@ import React, { useState, ReactNode } from "react";
 import * as auth from "auth-provider";
 import { request } from "../service/request";
 import { useMount } from "hooks";
+import { useAsync } from "hooks/use-async";
+import MaskLoading from "components/mask-loading";
+import ErrorPage from "components/error-page";
 // auth 中有 handleUserResponse login\register\logout 方法
 // - login
 // - register
@@ -19,8 +22,9 @@ const AuthContext =
     | {
         user: auth.User | null;
         // 不知道为什么老师下面的类型都是 Promise<void>
-        login: (form: AuthForm) => void;
-        register: (form: AuthForm) => void;
+        // login: (form: AuthForm) => void;
+        login: (form: AuthForm) => Promise<void>;
+        register: (form: AuthForm) => Promise<void>;
         logout: () => Promise<void>;
       }
     | undefined
@@ -43,28 +47,43 @@ const bootstrapUser = async () => {
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // 进行主要的逻辑处理
   // TODO user 为 localStorage 中存储的用户性
-  const [user, setUser] = useState<auth.User | null>(null);
+  const {
+    data: user,
+    setData: setUser,
+    setError,
+    error,
+    isIdle,
+    isLoading,
+    isError,
+    run,
+  } = useAsync<auth.User | null>();
 
   useMount(() => {
-    bootstrapUser().then(setUser);
+    run(bootstrapUser());
   });
   // 当用户点击 login 的时候
   const login = (form: AuthForm) => {
     // 将表单的数据传递个 auth 的 login 方法
     // point free
-    auth.login(form).then(setUser);
+    return auth.login(form).then(setUser);
   };
   // 当用户点击 注册 的时候
   const register = (form: AuthForm) => {
     // auth.register(form).then((user) => {
     //   setUser(user);
     // });
-    auth.register(form).then(setUser);
+    return auth.register(form).then(setUser);
   };
 
   // 当用户退出
   const logout = () => auth.logout().then(() => setUser(null));
 
+  if (isIdle || isLoading) {
+    return <MaskLoading />;
+  }
+  if (isError) {
+    return <ErrorPage error={error}></ErrorPage>;
+  }
   return (
     <AuthContext.Provider
       value={{ user, login, logout, register }}

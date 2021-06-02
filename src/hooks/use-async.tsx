@@ -13,8 +13,16 @@ const defaultInitialState: State<null> = {
   data: null,
 };
 
+const defaultConfig = {
+  throwOnError: false,
+};
+
 // 这里的 D 是 data 中的类型
-export const useAsync = <D,>(initialState?: State<D>) => {
+export const useAsync = <D,>(
+  initialState?: State<D>,
+  initialConfig?: typeof defaultConfig
+) => {
+  const config = { ...defaultConfig, ...initialConfig };
   const [state, setState] = useState<State<D>>({
     ...defaultInitialState,
     ...initialState,
@@ -49,7 +57,11 @@ export const useAsync = <D,>(initialState?: State<D>) => {
         return data;
       })
       .catch((error) => {
+        // catch 会消化异常
         setError(error);
+        if (config.throwOnError) {
+          return Promise.reject(error);
+        }
         return error;
       });
   };
