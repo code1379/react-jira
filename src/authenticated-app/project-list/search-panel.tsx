@@ -1,3 +1,4 @@
+import { jsx } from "@emotion/react";
 import { memo } from "react";
 import { Form, Input, Select } from "antd";
 const { Option } = Select;
@@ -43,24 +44,28 @@ export default memo(function SearchPanel({
       personId: value,
     });
   };
-  console.log(users);
   return (
-    <Form>
-      <Input
-        placeholder="项目名"
-        value={params.name}
-        onChange={(e) => {
-          handleInputChange(e);
-        }}
-      ></Input>
-      <Select defaultValue="" onChange={(e) => handleAntdSelectChange(e)}>
-        <Option value="">请选择</Option>
-        {users.map((user) => (
-          <Option key={user.id} value={user.id}>
-            {user.name}
-          </Option>
-        ))}
-      </Select>
+    // <Form layout="inline" css={{ marginBottom: "2rem", "<*": "" }}>
+    <Form layout="inline" style={{ marginBottom: "2rem" }}>
+      <Form.Item>
+        <Input
+          placeholder="项目名"
+          value={params.name}
+          onChange={(e) => {
+            handleInputChange(e);
+          }}
+        ></Input>
+      </Form.Item>
+      <Form.Item>
+        <Select defaultValue="" onChange={(e) => handleAntdSelectChange(e)}>
+          <Option value="">请选择</Option>
+          {users.map((user) => (
+            <Option key={user.id} value={user.id}>
+              {user.name}
+            </Option>
+          ))}
+        </Select>
+      </Form.Item>
     </Form>
   );
 });

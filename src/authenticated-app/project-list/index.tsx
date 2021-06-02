@@ -2,6 +2,7 @@ import { memo, useState, useEffect } from "react";
 import { cleanObject } from "utils";
 import { useMount, useDebounce } from "hooks";
 import { useRequest } from "../../service/request";
+import styled from "@emotion/styled";
 import SearchPanel from "./search-panel";
 import List from "./list";
 
@@ -43,10 +44,13 @@ export default memo(function ProjectList() {
   });
 
   return (
-    <div>
-      <h4>ProjectList</h4>
+    <Contaienr>
+      <h1>项目列表</h1>
       <SearchPanel params={params} setParams={setParams} users={users} />
       <List list={list} users={users} />
-    </div>
+    </Contaienr>
   );
 });
+const Contaienr = styled.div`
+  padding: 3.2rem;
+`;

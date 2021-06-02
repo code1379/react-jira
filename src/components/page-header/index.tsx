@@ -1,19 +1,33 @@
 import { memo } from "react";
 import styled from "@emotion/styled";
-import headerLogo from "../../assets/images/software-logo.svg";
+import logo from "../../assets/images/software-logo.svg";
 import { useAuth } from "context/auth-context";
-
+import { ReactComponent as Logo } from "../../assets/images/software-logo.svg";
+import { Dropdown, Menu } from "antd";
 export default memo(function PageHeader() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   console.log(user);
   return (
     <HeaderWrapper>
       <div className="left">
-        <div className="logo"></div>
+        <Logo width={"18rem"} color={"rgb(38,132,255)"} />
+        {/* <div className="logo"></div> */}
         <div className="item">项目</div>
         <div className="item">用户</div>
       </div>
-      <a className="right">Hi, {user?.name}</a>
+      <a className="right">
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item key="logout">
+                <a onClick={logout}>登出</a>
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <a onClick={(e) => e.preventDefault}> Hi, {user?.name}</a>
+        </Dropdown>
+      </a>
     </HeaderWrapper>
   );
 });
@@ -28,7 +42,7 @@ const HeaderWrapper = styled.div`
     display: flex;
     align-items: center;
     .logo {
-      background-image: url(${headerLogo});
+      background-image: url(${logo});
       background-size: cover;
       background-repeat: no-repeat;
       width: 16rem;
