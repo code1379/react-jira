@@ -2,6 +2,7 @@ import { memo } from "react";
 import { User } from "./search-panel";
 import { Table } from "antd";
 import dayjs from "dayjs";
+import { TableProps } from "antd";
 interface Project {
   id: string;
   name: string;
@@ -11,45 +12,18 @@ interface Project {
   pin?: boolean;
 }
 
-interface ListProps {
-  list: Project[];
+// interface ListProps {
+//   list: Project[];
+//   users: User[];
+//   loading: boolean;
+// }
+
+interface ListProps extends TableProps<Project> {
   users: User[];
 }
 
-// interface Info {
-//   [propName: string]: string;
-// }
-
-export default memo(function List({ list, users }: ListProps) {
-  // const columns = [
-  //   {
-  //     title: "名称",
-  //     dataIndex: "projectName",
-  //     key: "projectName",
-  //     sorter: (a: Project, b: Project) => a.name.localeCompare(b.name),
-  //   },
-  //   {
-  //     title: "部门",
-  //     dataIndex: "organization",
-  //     key: "organization",
-  //   },
-  //   {
-  //     title: "负责人",
-  //     dataIndex: "name",
-  //     key: "name",
-  //   },
-  // ];
-  // const data: Info[] = [];
-  // for (let p of list) {
-  //   let info: Info = {};
-  //   info.projectName = p.name;
-  //   info.name = users.find((user) => user.id === p.personId)?.name || "未知";
-  //   info.key = String(data.length + 1);
-  //   data.push(info);
-  // }
-
-  // return <Table columns={columns} dataSource={data} pagination={false}></Table>;
-
+export default memo(function List({ users, ...props }: ListProps) {
+  console.log(props);
   return (
     <Table
       columns={[
@@ -90,8 +64,8 @@ export default memo(function List({ list, users }: ListProps) {
         },
       ]}
       rowKey={(r) => r.id}
-      dataSource={list}
       pagination={false}
+      {...props}
     ></Table>
   );
 });

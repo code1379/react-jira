@@ -5,6 +5,7 @@ import { useRequest } from "../../service/request";
 import styled from "@emotion/styled";
 import SearchPanel from "./search-panel";
 import List from "./list";
+import { Typography } from "antd";
 
 export default memo(function ProjectList() {
   // 背后的原理并不是类型推断而是，泛型
@@ -15,13 +16,27 @@ export default memo(function ProjectList() {
   });
   const [list, setList] = useState([]);
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<null | Error>(null);
 
   const debouncedParams = useDebounce(params, 200);
   const client = useRequest();
   // 当 params 发生变化时， 应该去请求对应的接口
   useEffect(() => {
     console.log("获取项目信息");
-    client("projects", { data: cleanObject(debouncedParams) }).then(setList);
+    setLoading(true);
+    client("projects", { data: cleanObject(debouncedParams) })
+      .then((res) => {
+        setList(res);
+        if (error) {
+          setError(null);
+        }
+      })
+      .catch((error) => {
+        setError(error);
+        setList([]);
+      })
+      .finally(() => setLoading(false));
     // fetch(
     //   `${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParams))}`
     // ).then(async (res) => {
@@ -48,7 +63,10 @@ export default memo(function ProjectList() {
     <Contaienr>
       <h1>项目列表</h1>
       <SearchPanel params={params} setParams={setParams} users={users} />
-      <List list={list} users={users} />
+      {error ? (
+        <Typography.Text type="danger">{error.message}</Typography.Text>
+      ) : null}
+      <List dataSource={list} users={users} loading={loading} />
     </Contaienr>
   );
 });
