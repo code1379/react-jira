@@ -31,7 +31,7 @@ const Register = () => {
           <Input.Password placeholder="密码" />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button block type="primary" htmlType="submit">
             注册
           </Button>
         </Form.Item>

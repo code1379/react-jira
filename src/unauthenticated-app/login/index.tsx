@@ -33,7 +33,7 @@ const Login = () => {
           <Input.Password placeholder="密码" />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" block>
             登录
           </Button>
         </Form.Item>
