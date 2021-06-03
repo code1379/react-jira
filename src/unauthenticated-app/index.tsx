@@ -14,6 +14,13 @@ export default function UnAuthenticatedApp() {
     <Container>
       <Background />
       <Header />
+      <Button
+        onClick={() => {
+          throw new Error("点击抛出一个异常");
+        }}
+      >
+        抛出异常
+      </Button>
       <ShadowCard>
         <Title>{isRegisterPage ? "注册" : "登录"}</Title>
         {error ? (
