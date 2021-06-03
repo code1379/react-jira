@@ -1,8 +1,10 @@
 import { memo } from "react";
 import { User } from "./search-panel";
-import { Table } from "antd";
 import dayjs from "dayjs";
+import { Table } from "antd";
 import { TableProps } from "antd";
+import { Link } from "react-router-dom";
+
 export interface Project {
   id: string;
   name: string;
@@ -28,9 +30,13 @@ export default memo(function List({ users, ...props }: ListProps) {
       columns={[
         {
           title: "名称",
-          dataIndex: "name",
-          sorter(a, b) {
-            return a.name.localeCompare(b.name);
+          // dataIndex: "name",
+          // sorter(a, b) {
+          //   return a.name.localeCompare(b.name);
+          // },
+          render(index, project) {
+            console.log(index, project);
+            return <Link to={String(project.id)}>{project.name}</Link>;
           },
         },
         {

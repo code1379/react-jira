@@ -19,6 +19,7 @@ export default memo(function ProjectList() {
   const debouncedParams = useDebounce(params, 200);
 
   const { isLoading, error, data } = useProjects(debouncedParams);
+  console.log(data);
   useDocumentTitle("项目列表", false);
   return (
     <Contaienr>
