@@ -4,12 +4,15 @@ import logo from "../../assets/images/software-logo.svg";
 import { useAuth } from "context/auth-context";
 import { ReactComponent as Logo } from "../../assets/images/software-logo.svg";
 import { Dropdown, Menu, Button } from "antd";
+import { resetRoute } from "utils";
 export default memo(function PageHeader() {
   const { user, logout } = useAuth();
   return (
     <HeaderWrapper>
       <div className="left">
-        <Logo width={"18rem"} color={"rgb(38,132,255)"} />
+        <Button type="link" onClick={resetRoute}>
+          <Logo width={"18rem"} color={"rgb(38,132,255)"} />
+        </Button>
         {/* <div className="logo"></div> */}
         <div className="item">项目</div>
         <div className="item">用户</div>
@@ -52,6 +55,7 @@ const HeaderWrapper = styled.div`
       height: 2.5rem;
     }
     .item {
+      min-width: 3.2rem;
       margin-left: 2rem;
     }
   }

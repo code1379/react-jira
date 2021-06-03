@@ -49,3 +49,5 @@ export const cleanObject = (object: IObject) => {
 //     });
 //   };
 // }
+
+export const resetRoute = () => (window.location.href = window.location.origin);
