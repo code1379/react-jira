@@ -23,7 +23,6 @@ interface ListProps extends TableProps<Project> {
 }
 
 export default memo(function List({ users, ...props }: ListProps) {
-  console.log(props);
   return (
     <Table
       columns={[

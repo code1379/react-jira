@@ -17,6 +17,7 @@ const Login = ({ onError }: { onError: (error: Error) => void }) => {
       onError(e);
     }
   };
+
   return (
     <div>
       {user ? (

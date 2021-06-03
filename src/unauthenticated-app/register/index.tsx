@@ -2,7 +2,6 @@ import { useAuth } from "context/auth-context";
 
 import { Form, Input, Button } from "antd";
 import { useAsync } from "hooks/use-async";
-
 const Register = ({ onError }: { onError: (error: Error) => void }) => {
   const { register, user } = useAuth();
   const { run, isLoading } = useAsync(undefined, { throwOnError: true });
@@ -29,6 +28,7 @@ const Register = ({ onError }: { onError: (error: Error) => void }) => {
       onError(e);
     }
   };
+
   return (
     <div>
       {user ? (

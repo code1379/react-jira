@@ -6,21 +6,16 @@ import styled from "@emotion/styled";
 import logo from "../assets/images/logo.svg";
 import left from "../assets/images/left.svg";
 import right from "../assets/images/right.svg";
+import { useDocumentTitle } from "hooks/use-docuement-title";
 
 export default function UnAuthenticatedApp() {
   const [isRegisterPage, setIsRegisterPage] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  useDocumentTitle("请登陆注册以继续");
   return (
     <Container>
       <Background />
       <Header />
-      <Button
-        onClick={() => {
-          throw new Error("点击抛出一个异常");
-        }}
-      >
-        抛出异常
-      </Button>
       <ShadowCard>
         <Title>{isRegisterPage ? "注册" : "登录"}</Title>
         {error ? (

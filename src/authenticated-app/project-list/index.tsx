@@ -6,6 +6,7 @@ import List from "./list";
 import { Typography } from "antd";
 import { useProjects } from "hooks/projects";
 import { useUsers } from "hooks/user";
+import { useDocumentTitle } from "hooks/use-docuement-title";
 
 export default memo(function ProjectList() {
   // 背后的原理并不是类型推断而是，泛型
@@ -18,7 +19,7 @@ export default memo(function ProjectList() {
   const debouncedParams = useDebounce(params, 200);
 
   const { isLoading, error, data } = useProjects(debouncedParams);
-
+  useDocumentTitle("项目列表", false);
   return (
     <Contaienr>
       <h1>项目列表</h1>
