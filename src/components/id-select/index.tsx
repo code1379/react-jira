@@ -30,12 +30,13 @@ interface IdSelectProps
  *   - Number(undefined) => NaN
  * 当 选择默认类型的时候，onChange 会回调 undefined
  */
+
 export default memo(function IdSelect(props: IdSelectProps) {
   const { value, onChange, defaultOptionName, options, ...restProps } = props;
   return (
     <Select
       {...restProps}
-      value={toNumber(value)}
+      value={options?.length ? toNumber(value) : 0}
       // 0 || undefined 返回 undefined
       onChange={(value) => onChange(toNumber(value) || undefined)}
     >

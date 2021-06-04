@@ -1,9 +1,12 @@
 // import { jsx } from "@emotion/react";
 import { memo } from "react";
 import { Form, Input, Select } from "antd";
+import { Project } from "./list";
+import UserSelect from "components/user-select";
+
 const { Option } = Select;
 export interface User {
-  id: string;
+  id: number;
   name: string;
   email?: string;
   title?: string;
@@ -12,10 +15,7 @@ export interface User {
 }
 
 interface SearchPanelProps {
-  params: {
-    name: string;
-    personId: string;
-  };
+  params: Partial<Pick<Project, "name" | "personId">>;
   // setParams: (params: { name: string; personId: string }) => void;
   setParams: (params: SearchPanelProps["params"]) => void;
   users: User[];
@@ -31,7 +31,7 @@ export default memo(function SearchPanel({
   };
   const handleInputChange = handleInput;
 
-  const handleAntdSelectChange = (value: string) => {
+  const handleAntdSelectChange = (value: number) => {
     setParams({
       ...params,
       personId: value,
@@ -43,21 +43,18 @@ export default memo(function SearchPanel({
       <Form.Item>
         <Input
           placeholder="项目名"
-          value={params.name}
+          value={params.name || ""}
           onChange={(e) => {
             handleInputChange(e);
           }}
         ></Input>
       </Form.Item>
       <Form.Item>
-        <Select defaultValue="" onChange={(e) => handleAntdSelectChange(e)}>
-          <Option value="">请选择</Option>
-          {users.map((user) => (
-            <Option key={user.id} value={user.id}>
-              {user.name}
-            </Option>
-          ))}
-        </Select>
+        <UserSelect
+          value={params.personId}
+          defaultOptionName={"负责人"}
+          onChange={(e) => handleAntdSelectChange(Number(e))}
+        />
       </Form.Item>
     </Form>
   );

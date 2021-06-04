@@ -7,17 +7,14 @@ import { Typography } from "antd";
 import { useProjects } from "hooks/projects";
 import { useUsers } from "hooks/user";
 import { useDocumentTitle } from "hooks/use-docuement-title";
-import { useUrlQueryParam } from "hooks/useUrlQueryParam";
+
+import { useProjectsSearchParams } from "./utils";
 function ProjectList() {
-  const [keys, setKeys] = useState<("name" | "personId")[]>([
-    "name",
-    "personId",
-  ]);
-  const [params, setParams] = useUrlQueryParam(keys);
+  const [params, setParams] = useProjectsSearchParams();
   const { users } = useUsers();
   const debouncedParams = useDebounce(params, 200);
-
   const { isLoading, error, data } = useProjects(debouncedParams);
+
   console.log(data);
   useDocumentTitle("项目列表", false);
   return (
@@ -31,7 +28,7 @@ function ProjectList() {
     </Contaienr>
   );
 }
-// ProjectList.whyDidYouRender = true;
+ProjectList.whyDidYouRender = true;
 export default memo(ProjectList);
 
 const Contaienr = styled.div`
