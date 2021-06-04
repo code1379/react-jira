@@ -31,13 +31,6 @@ export default memo(function SearchPanel({
   };
   const handleInputChange = handleInput;
 
-  // const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setParams({
-  //     ...params,
-  //     personId: e.target.value,
-  //   });
-  // };
-
   const handleAntdSelectChange = (value: string) => {
     setParams({
       ...params,

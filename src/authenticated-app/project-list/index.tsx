@@ -31,7 +31,7 @@ function ProjectList() {
     </Contaienr>
   );
 }
-ProjectList.whyDidYouRender = true;
+// ProjectList.whyDidYouRender = true;
 export default memo(ProjectList);
 
 const Contaienr = styled.div`
