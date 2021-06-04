@@ -9,17 +9,11 @@ import { useUsers } from "hooks/user";
 import { useDocumentTitle } from "hooks/use-docuement-title";
 import { useUrlQueryParam } from "hooks/useUrlQueryParam";
 function ProjectList() {
-  // 背后的原理并不是类型推断而是，泛型
-  const [, setParams] = useState({
-    // 项目名称
-    name: "",
-    personId: "",
-  });
   const [keys, setKeys] = useState<("name" | "personId")[]>([
     "name",
     "personId",
   ]);
-  const [params] = useUrlQueryParam(keys);
+  const [params, setParams] = useUrlQueryParam(keys);
   const { users } = useUsers();
   const debouncedParams = useDebounce(params, 200);
 
