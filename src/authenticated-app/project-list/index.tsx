@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { useDebounce } from "hooks";
 import styled from "@emotion/styled";
 import SearchPanel from "./search-panel";
@@ -7,14 +7,19 @@ import { Typography } from "antd";
 import { useProjects } from "hooks/projects";
 import { useUsers } from "hooks/user";
 import { useDocumentTitle } from "hooks/use-docuement-title";
-
-export default memo(function ProjectList() {
+import { useUrlQueryParam } from "hooks/useUrlQueryParam";
+function ProjectList() {
   // 背后的原理并不是类型推断而是，泛型
-  const [params, setParams] = useState({
+  const [, setParams] = useState({
     // 项目名称
     name: "",
     personId: "",
   });
+  const [keys, setKeys] = useState<("name" | "personId")[]>([
+    "name",
+    "personId",
+  ]);
+  const [params] = useUrlQueryParam(keys);
   const { users } = useUsers();
   const debouncedParams = useDebounce(params, 200);
 
@@ -31,7 +36,10 @@ export default memo(function ProjectList() {
       <List dataSource={data || []} users={users} loading={isLoading} />
     </Contaienr>
   );
-});
+}
+ProjectList.whyDidYouRender = true;
+export default memo(ProjectList);
+
 const Contaienr = styled.div`
   padding: 3.2rem;
 `;
